@@ -1,0 +1,20 @@
+server:
+  port: 8999
+
+jwt:
+  secret: secret
+  expiration: 7200000
+  token: Authorization
+spring:
+  application:
+    name: spring-demo
+
+knife4j:
+  production: false
+  ## 开启Swagger的Basic认证功能,默认是false
+  basic:
+    enable: true
+    ## Basic认证用户名
+    username: root
+    ## Basic认证密码
+    password: 1234
