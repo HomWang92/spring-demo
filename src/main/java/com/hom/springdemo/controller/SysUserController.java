@@ -1,17 +1,22 @@
 package com.hom.springdemo.controller;
 
+import com.hom.springdemo.entity.SysUser;
+import com.hom.springdemo.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(description = "用户模块")
 @RestController
 @RequestMapping("/sysUser")
 public class SysUserController {
+
+    private final SysUserService sysUserService;
+
+    public SysUserController(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
+    }
 
     @ApiOperation("测试")
     @GetMapping(value = "/test")
@@ -24,5 +29,11 @@ public class SysUserController {
     @PostMapping(value = "/testNeed")
     public String testNeed() {
         return "testNeed";
+    }
+
+    @ApiOperation("注册")
+    @PostMapping("/reg")
+    public SysUser reg(@RequestBody SysUser sysUser) {
+        return sysUserService.save(sysUser);
     }
 }

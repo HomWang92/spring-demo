@@ -1,20 +1,43 @@
 server:
-  port: 8999
+  port: 8080
 
 jwt:
   secret: secret
   expiration: 7200000
   token: Authorization
+
 spring:
   application:
     name: spring-demo
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/spring_demo?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: Retail_HikariCP
+      minimum-idle: 5
+      idle-timeout: 180000
+      maximum-pool-size: 10
+      auto-commit: true
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    show-sql: true
+
+  redis:
+    database: 9
+    host: 192.168.1.200
 
 knife4j:
   production: false
-  ## 开启Swagger的Basic认证功能,默认是false
   basic:
-    enable: true
-    ## Basic认证用户名
+    enable: false
     username: root
-    ## Basic认证密码
     password: 1234
+

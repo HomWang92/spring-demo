@@ -32,6 +32,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthorizationTokenFilter authenticationTokenFilter;
 
+    @Bean
+    public PasswordEncoder passwordEncoderBean() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
 
     //先来这里认证一下
     @Autowired
@@ -46,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/sysUser/reg").permitAll()
                 .antMatchers("/haha").permitAll()
                 .antMatchers("/sysUser/test").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()
@@ -59,7 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/*.txt",
+                        "/*.json"
                 ).permitAll()
                 //接口文档
                 .antMatchers("/swagger-resources/**").permitAll()
@@ -72,17 +85,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoderBean() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 
 }
