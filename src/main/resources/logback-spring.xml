@@ -137,6 +137,42 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
+      <!-- 获取yml中graylog.ip -->
+    <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
+        <!-- Graylog服务的地址 -->
+        <graylogHost>192.168.0.227</graylogHost>
+        <!-- UDP Input端口 -->
+        <graylogPort>12201</graylogPort>
+        <!-- 最大GELF数据块大小（单位：字节），508为建议最小值，最大值为65467 -->
+        <maxChunkSize>508</maxChunkSize>
+        <!-- 是否使用压缩 -->
+        <useCompression>true</useCompression>
+        <encoder class="de.siegmar.logbackgelf.GelfEncoder">
+            <!-- 是否发送原生的日志信息 -->
+            <includeRawMessage>false</includeRawMessage>
+            <includeMarker>true</includeMarker>
+            <includeMdcData>true</includeMdcData>
+            <includeCallerData>false</includeCallerData>
+            <includeRootCauseData>false</includeRootCauseData>
+            <!-- 是否发送日志级别的名称，否则默认以数字代表日志级别 -->
+            <includeLevelName>true</includeLevelName>
+            <shortPatternLayout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%m%nopex</pattern>
+            </shortPatternLayout>
+            <!--            <fullPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--                <pattern>%m%n</pattern>-->
+            <!--            </fullPatternLayout>-->
+            <fullPatternLayout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d - [%thread] %-5level %logger{35} - %msg%n</pattern>
+            </fullPatternLayout>
+            <staticField>app_name:demo</staticField>
+            <staticField>os_arch:${os.arch}</staticField>
+            <staticField>os_name:${os.name}</staticField>
+            <staticField>os_version:${os.version}</staticField>
+            <staticField>os_version:${os.version}</staticField>
+        </encoder>
+    </appender>
+  
 
     <!--
         <logger>用来设置某一个包或者具体的某一个类的日志打印级别、
@@ -185,6 +221,7 @@
         <root level="info">
             <appender-ref ref="ERROR_FILE" />
             <appender-ref ref="WARN_FILE" />
+            <appender-ref ref="GELF"/>
         </root>
     </springProfile>
 
